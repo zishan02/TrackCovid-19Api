@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class TrackCovid19Service {
@@ -58,6 +59,7 @@ public class TrackCovid19Service {
         LastUpdated lu = ls.get();
         this.timeDiffCalc(lu.getLastUpdated(),new Date(),lu);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM hh:mm:ss a");
+        formatter.setTimeZone(TimeZone.getTimeZone("IST"));
         String formattedDateTime=formatter.format(lu.getLastUpdated());
         String[] s=formattedDateTime.split(" ");
         lu.setDate(s[0]);
