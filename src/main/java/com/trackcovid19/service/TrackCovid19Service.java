@@ -26,7 +26,7 @@ public class TrackCovid19Service {
 
     public StateWiseData createPerState(StateWiseData stateWiseData){
         List<StateWiseData> state=trackCovid19Repo.findByStateName(stateWiseData.getStateName());
-        if(null!=state) {
+        if(null!=state && state.size()>0) {
             state.get(0).setConfirmedCases(stateWiseData.getConfirmedCases());
             state.get(0).setRecoveredCases(stateWiseData.getRecoveredCases());
             state.get(0).setDeceased(stateWiseData.getDeceased());
