@@ -185,9 +185,6 @@ public CovidChartData readChartDataFromExcel() {
 
         }
 
-        LastUpdated lastUpdated = new LastUpdated();
-        lastUpdated.setLastUpdated(new Date());
-        this.createLastUpdate(lastUpdated);
         return covidChartData;
 
     } catch (Exception e) {
