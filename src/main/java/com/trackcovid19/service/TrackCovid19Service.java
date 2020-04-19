@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -25,6 +24,8 @@ public class TrackCovid19Service {
 
     @Autowired
     private TrackCovid19LastUpdateRepo trackCovid19LastUpdateRepo;
+
+
 
     public StateWiseData createPerState(StateWiseData stateWiseData) {
         List<StateWiseData> state = trackCovid19Repo.findByStateName(stateWiseData.getStateName());
@@ -104,7 +105,7 @@ public class TrackCovid19Service {
             String recovered = null;
             String deceased = null;
 
-            File file = new File(getClass().getClassLoader().getResource("covi.xslx").getFile());   //creating a new file instance
+            File file = new File(getClass().getClassLoader().getResource("covid.xslx").getFile());   //creating a new file instance
             FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file
 //creating Workbook instance that refers to .xlsx file
             XSSFWorkbook wb = new XSSFWorkbook(fis);
@@ -154,7 +155,7 @@ public CovidChartData readChartDataFromExcel() {
         CovidChartData covidChartData = new CovidChartData();
         covidChartData.setxAxis(new ArrayList<>());
         covidChartData.setyAxis(new ArrayList<>());
-        File file = new File(getClass().getClassLoader().getResource("covi.xslx").getFile());   //creating a new file instance
+        File file = new File("/resources/covid.xslx");   //creating a new file instance
         FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file
 //creating Workbook instance that refers to .xlsx file
         XSSFWorkbook wb = new XSSFWorkbook(fis);
