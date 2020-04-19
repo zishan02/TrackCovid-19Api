@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -155,11 +156,12 @@ public CovidChartData readChartDataFromExcel() {
         CovidChartData covidChartData = new CovidChartData();
         covidChartData.setxAxis(new ArrayList<>());
         covidChartData.setyAxis(new ArrayList<>());
-        File file = new File(getClass().getClassLoader().getResource("covid.xslx").getFile());   //creating a new file instance
+          //creating a new file instance
         //creating a new file instance
-        FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("covid.xslx");
+           //obtaining bytes from the file
 //creating Workbook instance that refers to .xlsx file
-        XSSFWorkbook wb = new XSSFWorkbook(fis);
+        XSSFWorkbook wb = new XSSFWorkbook(is);
         XSSFSheet sheet = wb.getSheetAt(1);     //creating a Sheet object to retrieve object
         Iterator<Row> itr = sheet.iterator();    //iterating over excel file
         while (itr.hasNext()) {
