@@ -155,7 +155,8 @@ public CovidChartData readChartDataFromExcel() {
         CovidChartData covidChartData = new CovidChartData();
         covidChartData.setxAxis(new ArrayList<>());
         covidChartData.setyAxis(new ArrayList<>());
-        File file = new File("/resources/covid.xslx");   //creating a new file instance
+        File file = new File(getClass().getClassLoader().getResource("covid.xslx").getFile());   //creating a new file instance
+        //creating a new file instance
         FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file
 //creating Workbook instance that refers to .xlsx file
         XSSFWorkbook wb = new XSSFWorkbook(fis);
