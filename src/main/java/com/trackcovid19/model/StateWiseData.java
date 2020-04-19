@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.annotation.Documented;
+import java.util.Date;
 
 @Document
 public class StateWiseData {
@@ -17,6 +18,46 @@ public class StateWiseData {
     private String recoveredCases;
 
     private String deceased;
+
+    private Date lastUpdated;
+
+    private int changeConfirmed;
+
+    private int changeRecovered;
+
+    private int changeDeceased;
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public int getChangeConfirmed() {
+        return changeConfirmed;
+    }
+
+    public void setChangeConfirmed(int changeConfirmed) {
+        this.changeConfirmed = changeConfirmed;
+    }
+
+    public int getChangeRecovered() {
+        return changeRecovered;
+    }
+
+    public void setChangeRecovered(int changeRecovered) {
+        this.changeRecovered = changeRecovered;
+    }
+
+    public int getChangeDeceased() {
+        return changeDeceased;
+    }
+
+    public void setChangeDeceased(int changeDeceased) {
+        this.changeDeceased = changeDeceased;
+    }
 
     public StateWiseData(String stateName, String confirmedCases, String recoveredCases, String deceased) {
         this.stateName = stateName;
