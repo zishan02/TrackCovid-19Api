@@ -1,6 +1,7 @@
 package com.trackcovid19.controller;
 
 import com.trackcovid19.model.CasesCount;
+import com.trackcovid19.model.CovidChartData;
 import com.trackcovid19.model.LastUpdated;
 import com.trackcovid19.model.StateWiseData;
 import com.trackcovid19.service.TrackCovid19Service;
@@ -60,5 +61,15 @@ return stateData;
         casesCount.setTotalDeceasedCases(totalDeceasedCases);
         return  casesCount;
     }
+    @CrossOrigin
+    @GetMapping("/uploadExcel")
+    public void uploadExcel() {
+        trackCovid19Service.readFromXLSAndUpdate();
+    }
 
+    @CrossOrigin
+    @GetMapping("/fetchChartData")
+    public CovidChartData fetchChartData() {
+        return trackCovid19Service.readChartDataFromExcel();
+    }
 }
