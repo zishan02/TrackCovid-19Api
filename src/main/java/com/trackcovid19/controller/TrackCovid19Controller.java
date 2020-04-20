@@ -75,4 +75,10 @@ return stateData;
     public List<CovidIncrease> fetchRateIncrease() {
         return trackCovid19Service.fetchLast5Increase();
     }
+
+    @CrossOrigin
+    @GetMapping("/fetchTop5")
+    public List<StateWiseData> fetchTop5() {
+        return trackCovid19Service.fetchTop5();
+    }
 }

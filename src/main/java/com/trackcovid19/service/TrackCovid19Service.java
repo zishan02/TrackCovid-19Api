@@ -272,4 +272,14 @@ public List<CovidIncrease> fetchLast5Increase(){
 
     }
 return null;
-}}
+}
+public List<StateWiseData> fetchTop5(){
+    List<StateWiseData> ls= this.getAllState();
+    List<StateWiseData> newList=new ArrayList<>();
+    Collections.sort(ls);
+    for(int i=0;i<5;i++){
+        newList.add(ls.get(i));
+    }
+    return newList;
+}
+}

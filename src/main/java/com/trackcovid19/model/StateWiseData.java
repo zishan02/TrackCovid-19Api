@@ -4,10 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.lang.annotation.Documented;
+import java.util.Comparator;
 import java.util.Date;
 
 @Document
-public class StateWiseData {
+public class StateWiseData implements Comparable<StateWiseData> {
     @Id
     private String id;
 
@@ -106,5 +107,10 @@ public class StateWiseData {
                 ", recoveredCases='" + recoveredCases + '\'' +
                 ", deceased='" + deceased + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(StateWiseData o) {
+       return Integer.parseInt(o.getConfirmedCases())-Integer.parseInt(this.getConfirmedCases());
     }
 }
