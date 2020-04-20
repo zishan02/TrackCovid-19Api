@@ -3,8 +3,10 @@ package com.trackcovid19.service;
 import com.trackcovid19.Repository.TrackCovid19LastUpdateRepo;
 import com.trackcovid19.Repository.TrackCovid19Repo;
 import com.trackcovid19.model.CovidChartData;
+import com.trackcovid19.model.CovidIncrease;
 import com.trackcovid19.model.LastUpdated;
 import com.trackcovid19.model.StateWiseData;
+import com.trackcovid19.utils.Formatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,16 +33,36 @@ public class TrackCovid19Service {
     public StateWiseData createPerState(StateWiseData stateWiseData) {
         List<StateWiseData> state = trackCovid19Repo.findByStateName(stateWiseData.getStateName());
         if (null != state && state.size() > 0) {
-            state.get(0).setConfirmedCases(stateWiseData.getConfirmedCases());
             state.get(0).setRecoveredCases(stateWiseData.getRecoveredCases());
             state.get(0).setDeceased(stateWiseData.getDeceased());
+            state.get(0).setLastUpdated(stateWiseData.getLastUpdated());
+            Date lastUpdated=stateWiseData.getLastUpdated();
+            if(Formatter.isToday(lastUpdated)){
+                int diff=0;
+                diff=Integer.parseInt(stateWiseData.getConfirmedCases())-Integer.parseInt(state.get(0).getConfirmedCases());
+                state.get(0).setChangeConfirmed(state.get(0).getChangeConfirmed()+diff);
+                diff=Integer.parseInt(stateWiseData.getRecoveredCases())-Integer.parseInt(state.get(0).getRecoveredCases());
+                state.get(0).setChangeRecovered(state.get(0).getChangeRecovered()+diff);
+                diff=Integer.parseInt(stateWiseData.getDeceased())-Integer.parseInt(state.get(0).getDeceased());
+                state.get(0).setChangeDeceased(state.get(0).getChangeDeceased()+diff);
+
+            }else {
+                int diff=0;
+                diff=Integer.parseInt(stateWiseData.getConfirmedCases())-Integer.parseInt(state.get(0).getConfirmedCases());
+                state.get(0).setChangeConfirmed(diff);
+                diff=Integer.parseInt(stateWiseData.getRecoveredCases())-Integer.parseInt(state.get(0).getRecoveredCases());
+                state.get(0).setChangeRecovered(diff);
+                diff=Integer.parseInt(stateWiseData.getDeceased())-Integer.parseInt(state.get(0).getDeceased());
+                state.get(0).setChangeDeceased(diff);
+            }
+            state.get(0).setConfirmedCases(stateWiseData.getConfirmedCases());
             return trackCovid19Repo.save(state.get(0));
         }
         return trackCovid19Repo.save(stateWiseData);
     }
 
     public List<StateWiseData> getAllState() {
-        return trackCovid19Repo.findAll();
+      return trackCovid19Repo.findAll();
     }
 
     public LastUpdated createLastUpdate(LastUpdated lastUpdated) {
@@ -134,6 +156,7 @@ public class TrackCovid19Service {
 
                 }
                 StateWiseData stateWiseData = new StateWiseData(state, activeCases, recovered, deceased);
+                stateWiseData.setLastUpdated(new Date());
                 this.createPerState(stateWiseData);
             }
 
@@ -154,12 +177,13 @@ public CovidChartData readChartDataFromExcel() {
         String month = new String();
         Long totalConfirmed = null;
         CovidChartData covidChartData = new CovidChartData();
+        List<CovidChartData> covidChartList = new ArrayList<>();
         covidChartData.setxAxis(new ArrayList<>());
         covidChartData.setyAxis(new ArrayList<>());
-          //creating a new file instance
+        //creating a new file instance
         //creating a new file instance
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("covid.xslx");
-           //obtaining bytes from the file
+        //obtaining bytes from the file
 //creating Workbook instance that refers to .xlsx file
         XSSFWorkbook wb = new XSSFWorkbook(is);
         XSSFSheet sheet = wb.getSheetAt(1);     //creating a Sheet object to retrieve object
@@ -190,7 +214,59 @@ public CovidChartData readChartDataFromExcel() {
     } catch (Exception e) {
         e.printStackTrace();
     }
-return null;
+    return null;
 }
+public List<CovidIncrease> fetchLast5Increase(){
+        try {
+        int change=0;
+        String percentageChange=null;
+        String date=null;
 
-}
+            List<CovidIncrease> covidIncreaseList=new ArrayList<>();
+        int count=0;
+            Iterator<Cell> previous=null;
+        //creating a new file instance
+        //creating a new file instance
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("covid.xslx");
+        XSSFWorkbook wb = new XSSFWorkbook(is);
+        XSSFSheet sheet = wb.getSheetAt(1);
+        int noOfRow=sheet.getPhysicalNumberOfRows()-6;//creating a Sheet object to retrieve object
+        Iterator<Row> itr = sheet.iterator();    //iterating over excel file
+        System.out.println(sheet.getTables().size());
+        while (itr.hasNext()) {
+            Row row = itr.next();
+            count++;
+            Iterator<Cell> cellIterator = row.cellIterator();
+            //iterating over each column
+            if(count>=noOfRow) {
+                CovidIncrease covidIncrease = new CovidIncrease();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    Cell previousCell=previous.next();
+                    if (cell.getColumnIndex() == 0) {
+                        date = cell.getStringCellValue();
+                        covidIncrease.setDate(date);
+                    }
+                    if (cell.getColumnIndex() == 1) {
+                        change= (int) (cell.getNumericCellValue()-previousCell.getNumericCellValue());
+                        percentageChange=String.valueOf(Math.round((change/previousCell.getNumericCellValue())*100))+"%";
+                        covidIncrease.setChange(change);
+                        covidIncrease.setPercentageChange(percentageChange);
+                    }
+
+
+                }
+                covidIncreaseList.add(covidIncrease);
+            }
+            previous=row.cellIterator();
+        }
+
+        return covidIncreaseList;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+
+
+    }
+return null;
+}}

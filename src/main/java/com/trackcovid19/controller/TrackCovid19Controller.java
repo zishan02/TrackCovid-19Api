@@ -1,9 +1,6 @@
 package com.trackcovid19.controller;
 
-import com.trackcovid19.model.CasesCount;
-import com.trackcovid19.model.CovidChartData;
-import com.trackcovid19.model.LastUpdated;
-import com.trackcovid19.model.StateWiseData;
+import com.trackcovid19.model.*;
 import com.trackcovid19.service.TrackCovid19Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +68,11 @@ return stateData;
     @GetMapping("/fetchChartData")
     public CovidChartData fetchChartData() {
         return trackCovid19Service.readChartDataFromExcel();
+    }
+
+    @CrossOrigin
+    @GetMapping("/fetchRateIncrease")
+    public List<CovidIncrease> fetchRateIncrease() {
+        return trackCovid19Service.fetchLast5Increase();
     }
 }
