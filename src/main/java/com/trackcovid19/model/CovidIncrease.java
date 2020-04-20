@@ -3,9 +3,18 @@ package com.trackcovid19.model;
 
 public class CovidIncrease {
 
+    private int num;
     private String date;
     private int change;
     private String percentageChange;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 
     public String getDate() {
         return date;

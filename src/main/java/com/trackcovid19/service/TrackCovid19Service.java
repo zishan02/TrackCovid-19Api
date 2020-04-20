@@ -224,13 +224,14 @@ public List<CovidIncrease> fetchLast5Increase(){
 
             List<CovidIncrease> covidIncreaseList=new ArrayList<>();
         int count=0;
+        int counter=0;
             Iterator<Cell> previous=null;
         //creating a new file instance
         //creating a new file instance
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("covid.xslx");
         XSSFWorkbook wb = new XSSFWorkbook(is);
         XSSFSheet sheet = wb.getSheetAt(1);
-        int noOfRow=sheet.getPhysicalNumberOfRows()-6;//creating a Sheet object to retrieve object
+        int noOfRow=sheet.getPhysicalNumberOfRows()-5;//creating a Sheet object to retrieve object
         Iterator<Row> itr = sheet.iterator();    //iterating over excel file
         System.out.println(sheet.getTables().size());
         while (itr.hasNext()) {
@@ -238,7 +239,8 @@ public List<CovidIncrease> fetchLast5Increase(){
             count++;
             Iterator<Cell> cellIterator = row.cellIterator();
             //iterating over each column
-            if(count>=noOfRow) {
+            if(count>noOfRow) {
+                counter++;
                 CovidIncrease covidIncrease = new CovidIncrease();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
@@ -246,10 +248,11 @@ public List<CovidIncrease> fetchLast5Increase(){
                     if (cell.getColumnIndex() == 0) {
                         date = cell.getStringCellValue();
                         covidIncrease.setDate(date);
+                        covidIncrease.setNum(counter);
                     }
                     if (cell.getColumnIndex() == 1) {
                         change= (int) (cell.getNumericCellValue()-previousCell.getNumericCellValue());
-                        percentageChange=String.valueOf(Math.round((change/previousCell.getNumericCellValue())*100))+"%";
+                        percentageChange=(Math.round((change/previousCell.getNumericCellValue())*100))+"%";
                         covidIncrease.setChange(change);
                         covidIncrease.setPercentageChange(percentageChange);
                     }
