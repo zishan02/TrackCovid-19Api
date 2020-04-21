@@ -70,7 +70,7 @@ return stateData;
 
     @CrossOrigin
     @GetMapping("/fetchEstimatedCases")
-    public int fetchEstimatedCases() {
+    public EstimatedCases fetchEstimatedCases() {
         return trackCovid19Service.estimateCoronaConfirmed();
     }
 }

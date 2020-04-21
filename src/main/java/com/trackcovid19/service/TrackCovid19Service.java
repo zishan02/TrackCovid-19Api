@@ -299,8 +299,8 @@ public CasesCount calculateTotals(){
 
     return casesCount;
 }
-public Integer estimateCoronaConfirmed(){
-
+public EstimatedCases estimateCoronaConfirmed(){
+        EstimatedCases estimatedCases=new EstimatedCases();
         List<CovidIncrease> covidIncreaseList=this.fetchLast5Increase();
         CasesCount casesCount=this.calculateTotals();
 
@@ -313,7 +313,8 @@ public Integer estimateCoronaConfirmed(){
             double t=7;
             double amount = p * Math.pow(1 + (r / n), n * t);
             int amt=(int) amount;
-            return amt;
+            estimatedCases.setEstimatedRecoveredWeek(amt);
+            return estimatedCases;
         }
 return null;
 }
