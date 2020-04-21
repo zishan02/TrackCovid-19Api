@@ -2,10 +2,7 @@ package com.trackcovid19.service;
 
 import com.trackcovid19.Repository.TrackCovid19LastUpdateRepo;
 import com.trackcovid19.Repository.TrackCovid19Repo;
-import com.trackcovid19.model.CovidChartData;
-import com.trackcovid19.model.CovidIncrease;
-import com.trackcovid19.model.LastUpdated;
-import com.trackcovid19.model.StateWiseData;
+import com.trackcovid19.model.*;
 import com.trackcovid19.utils.Formatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -252,9 +249,10 @@ public List<CovidIncrease> fetchLast5Increase(){
                     }
                     if (cell.getColumnIndex() == 1) {
                         change= (int) (cell.getNumericCellValue()-previousCell.getNumericCellValue());
-                        percentageChange=(Math.round((change/previousCell.getNumericCellValue())*100))+"%";
+                        long perChange=(Math.round((change/previousCell.getNumericCellValue())*100));
                         covidIncrease.setChange(change);
-                        covidIncrease.setPercentageChange(percentageChange);
+                        covidIncrease.setPercentageChangeVal(Math.round(perChange));
+                        covidIncrease.setPercentageChange(perChange+"%");
                     }
 
 
@@ -282,4 +280,42 @@ public List<StateWiseData> fetchTop5(){
     }
     return newList;
 }
+
+public CasesCount calculateTotals(){
+    int totalActiveCases=0;
+    int totalRecoveredCases=0;
+    int totalDeceasedCases=0;
+    List<StateWiseData> data=this.getAllState();
+    for(StateWiseData state : data){
+
+        totalActiveCases=totalActiveCases+Integer.parseInt(state.getConfirmedCases());
+        totalRecoveredCases=totalRecoveredCases+Integer.parseInt(state.getRecoveredCases());
+        totalDeceasedCases=totalDeceasedCases+Integer.parseInt(state.getDeceased());
+    }
+    CasesCount casesCount=new CasesCount();
+    casesCount.setTotalActiveCases(totalActiveCases);
+    casesCount.setTotalRecoveredCases(totalRecoveredCases);
+    casesCount.setTotalDeceasedCases(totalDeceasedCases);
+
+    return casesCount;
+}
+public Integer estimateCoronaConfirmed(){
+
+        List<CovidIncrease> covidIncreaseList=this.fetchLast5Increase();
+        CasesCount casesCount=this.calculateTotals();
+
+        if(covidIncreaseList.size()>0){
+            CovidIncrease covidIncrease=covidIncreaseList.get(4);
+            System.out.println(covidIncrease.getPercentageChangeVal());
+            double p=casesCount.getTotalActiveCases();
+            double r=covidIncrease.getPercentageChangeVal()/100.0;
+            double n=1;
+            double t=7;
+            double amount = p * Math.pow(1 + (r / n), n * t);
+            int amt=(int) amount;
+            return amt;
+        }
+return null;
+}
+
 }

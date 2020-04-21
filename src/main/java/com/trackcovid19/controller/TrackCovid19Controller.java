@@ -42,21 +42,7 @@ return stateData;
     @CrossOrigin
     @GetMapping("/fetchCountCases")
     public CasesCount countTotalCases() {
-        int totalActiveCases=0;
-        int totalRecoveredCases=0;
-        int totalDeceasedCases=0;
-         List<StateWiseData> data=trackCovid19Service.getAllState();
-         for(StateWiseData state : data){
-
-             totalActiveCases=totalActiveCases+Integer.parseInt(state.getConfirmedCases());
-             totalRecoveredCases=totalRecoveredCases+Integer.parseInt(state.getRecoveredCases());
-             totalDeceasedCases=totalDeceasedCases+Integer.parseInt(state.getDeceased());
-         }
-         CasesCount casesCount=new CasesCount();
-        casesCount.setTotalActiveCases(totalActiveCases);
-        casesCount.setTotalRecoveredCases(totalRecoveredCases);
-        casesCount.setTotalDeceasedCases(totalDeceasedCases);
-        return  casesCount;
+        return  trackCovid19Service.calculateTotals();
     }
     @CrossOrigin
     @GetMapping("/uploadExcel")
@@ -80,5 +66,11 @@ return stateData;
     @GetMapping("/fetchTop5")
     public List<StateWiseData> fetchTop5() {
         return trackCovid19Service.fetchTop5();
+    }
+
+    @CrossOrigin
+    @GetMapping("/fetchEstimatedCases")
+    public int fetchEstimatedCases() {
+        return trackCovid19Service.estimateCoronaConfirmed();
     }
 }

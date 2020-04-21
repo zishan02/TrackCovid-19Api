@@ -7,6 +7,15 @@ public class CovidIncrease {
     private String date;
     private int change;
     private String percentageChange;
+    private Integer percentageChangeVal;
+
+    public Integer getPercentageChangeVal() {
+        return percentageChangeVal;
+    }
+
+    public void setPercentageChangeVal(Integer percentageChangeVal) {
+        this.percentageChangeVal = percentageChangeVal;
+    }
 
     public int getNum() {
         return num;
