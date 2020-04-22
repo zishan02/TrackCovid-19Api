@@ -1,116 +1,130 @@
 package com.trackcovid19.model;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.lang.annotation.Documented;
-import java.util.Comparator;
-import java.util.Date;
-
 @Document
 public class StateWiseData implements Comparable<StateWiseData> {
-    @Id
-    private String id;
+  @Id private String id;
 
-    private String stateName;
+  private String stateName;
 
-    private String confirmedCases;
+  private String confirmedCases;
 
-    private String recoveredCases;
+  private String recoveredCases;
 
-    private String deceased;
+  private String deceased;
 
-    private Date lastUpdated;
+  private Date lastUpdated;
 
-    private int changeConfirmed;
+  private int changeConfirmed;
 
-    private int changeRecovered;
+  private int changeRecovered;
 
-    private int changeDeceased;
+  private int changeDeceased;
 
-    public Date getLastUpdated() {
-        return lastUpdated;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public int getChangeConfirmed() {
-        return changeConfirmed;
-    }
+  public Date getLastUpdated() {
+    return lastUpdated;
+  }
 
-    public void setChangeConfirmed(int changeConfirmed) {
-        this.changeConfirmed = changeConfirmed;
-    }
+  public void setLastUpdated(Date lastUpdated) {
+    this.lastUpdated = lastUpdated;
+  }
 
-    public int getChangeRecovered() {
-        return changeRecovered;
-    }
+  public int getChangeConfirmed() {
+    return changeConfirmed;
+  }
 
-    public void setChangeRecovered(int changeRecovered) {
-        this.changeRecovered = changeRecovered;
-    }
+  public void setChangeConfirmed(int changeConfirmed) {
+    this.changeConfirmed = changeConfirmed;
+  }
 
-    public int getChangeDeceased() {
-        return changeDeceased;
-    }
+  public int getChangeRecovered() {
+    return changeRecovered;
+  }
 
-    public void setChangeDeceased(int changeDeceased) {
-        this.changeDeceased = changeDeceased;
-    }
+  public void setChangeRecovered(int changeRecovered) {
+    this.changeRecovered = changeRecovered;
+  }
 
-    public StateWiseData(String stateName, String confirmedCases, String recoveredCases, String deceased) {
-        this.stateName = stateName;
-        this.confirmedCases = confirmedCases;
-        this.recoveredCases = recoveredCases;
-        this.deceased = deceased;
-    }
+  public int getChangeDeceased() {
+    return changeDeceased;
+  }
 
-    public String getStateName() {
-        return stateName;
-    }
+  public void setChangeDeceased(int changeDeceased) {
+    this.changeDeceased = changeDeceased;
+  }
 
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
-    }
+  public StateWiseData(
+      String stateName, String confirmedCases, String recoveredCases, String deceased) {
+    this.stateName = stateName;
+    this.confirmedCases = confirmedCases;
+    this.recoveredCases = recoveredCases;
+    this.deceased = deceased;
+  }
 
-    public String getConfirmedCases() {
-        return confirmedCases;
-    }
+  public String getStateName() {
+    return stateName;
+  }
 
-    public void setConfirmedCases(String confirmedCases) {
-        this.confirmedCases = confirmedCases;
-    }
+  public void setStateName(String stateName) {
+    this.stateName = stateName;
+  }
 
-    public String getRecoveredCases() {
-        return recoveredCases;
-    }
+  public String getConfirmedCases() {
+    return confirmedCases;
+  }
 
-    public void setRecoveredCases(String recoveredCases) {
-        this.recoveredCases = recoveredCases;
-    }
+  public void setConfirmedCases(String confirmedCases) {
+    this.confirmedCases = confirmedCases;
+  }
 
-    public String getDeceased() {
-        return deceased;
-    }
+  public String getRecoveredCases() {
+    return recoveredCases;
+  }
 
-    public void setDeceased(String deceased) {
-        this.deceased = deceased;
-    }
+  public void setRecoveredCases(String recoveredCases) {
+    this.recoveredCases = recoveredCases;
+  }
 
-    @Override
-    public String toString() {
-        return "StateWiseData{" +
-                "stateName='" + stateName + '\'' +
-                ", confirmedCases='" + confirmedCases + '\'' +
-                ", recoveredCases='" + recoveredCases + '\'' +
-                ", deceased='" + deceased + '\'' +
-                '}';
-    }
+  public String getDeceased() {
+    return deceased;
+  }
 
-    @Override
-    public int compareTo(StateWiseData o) {
-       return Integer.parseInt(o.getConfirmedCases())-Integer.parseInt(this.getConfirmedCases());
-    }
+  public void setDeceased(String deceased) {
+    this.deceased = deceased;
+  }
+
+  @Override
+  public String toString() {
+    return "StateWiseData{"
+        + "stateName='"
+        + stateName
+        + '\''
+        + ", confirmedCases='"
+        + confirmedCases
+        + '\''
+        + ", recoveredCases='"
+        + recoveredCases
+        + '\''
+        + ", deceased='"
+        + deceased
+        + '\''
+        + '}';
+  }
+
+  @Override
+  public int compareTo(StateWiseData o) {
+    return Integer.parseInt(o.getConfirmedCases()) - Integer.parseInt(this.getConfirmedCases());
+  }
 }

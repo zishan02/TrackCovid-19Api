@@ -38,7 +38,7 @@ public class TrackCovid19Controller {
         if(null!=stateData){
             LastUpdated lastData=trackCovid19Service.createLastUpdate(lastUpdated);
         }
-return stateData;
+        return stateData;
     }
     @CrossOrigin
     @GetMapping("/fetchLastUpdate")
@@ -83,6 +83,6 @@ return stateData;
     @CrossOrigin
     @GetMapping("/extractTableData")
     public void extractTableData() {
-         trackCovidDataExtract.extractTableData();
+        trackCovidDataExtract.extractTableData();
     }
 }
