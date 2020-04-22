@@ -22,7 +22,9 @@ public class TrackCovid19Controller {
     @CrossOrigin
     @GetMapping("/fetchTableData")
     public List<StateWiseData> fetchAll() {
-        return trackCovid19Service.getAllState();
+        List<StateWiseData> ls=trackCovid19Service.getAllState();
+        Collections.sort(ls);
+        return ls;
     }
 
     @CrossOrigin
