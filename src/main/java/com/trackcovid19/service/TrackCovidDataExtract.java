@@ -23,7 +23,7 @@ public class TrackCovidDataExtract {
     @Autowired
     private Environment env;
 
-    @Scheduled(cron = "0 24 1 * * *",zone = "IST")
+    @Scheduled(cron = "0 30 8,17 * * *",zone = "IST")
     public void extractTableData() {
         try {
             String url=env.getProperty("app.web");
