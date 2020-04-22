@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoRepositoriesAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan(basePackages = "com.trackcovid19")
 @SpringBootApplication
+@EnableScheduling
 @EnableMongoRepositories(basePackageClasses = TrackCovid19Repo.class)
 public class ApiApplication {
 

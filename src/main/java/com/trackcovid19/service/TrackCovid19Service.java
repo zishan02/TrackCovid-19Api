@@ -303,7 +303,6 @@ public EstimatedCases estimateCoronaConfirmed(){
         EstimatedCases estimatedCases=new EstimatedCases();
         List<CovidIncrease> covidIncreaseList=this.fetchLast5Increase();
         CasesCount casesCount=this.calculateTotals();
-
         if(covidIncreaseList.size()>0){
            int sumOfPer= covidIncreaseList.stream().mapToInt(value -> value.getPercentageChangeVal()).sum();
             double p=casesCount.getTotalActiveCases();
