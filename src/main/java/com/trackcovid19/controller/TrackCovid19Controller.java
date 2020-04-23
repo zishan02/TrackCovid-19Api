@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import com.trackcovid19.model.*;
 import com.trackcovid19.service.TrackCovid19Service;
-import com.trackcovid19.service.TrackCovidDataExtract;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class TrackCovid19Controller {
   @Autowired private TrackCovid19Service trackCovid19Service;
 
-  @Autowired private TrackCovidDataExtract trackCovidDataExtract;
+  //@Autowired private TrackCovidDataExtract trackCovidDataExtract;
 
   @CrossOrigin
   @GetMapping("/fetchTableData")
@@ -85,6 +84,6 @@ public class TrackCovid19Controller {
   @CrossOrigin
   @GetMapping("/extractTableData")
   public void extractTableData() {
-    trackCovidDataExtract.extractTableData();
+    //trackCovidDataExtract.extractTableData();
   }
 }
