@@ -22,7 +22,7 @@ public class TrackCovidDataExtract {
     @Autowired
     private Environment env;
 
-    @Scheduled(cron = "0 0 9,18 * * *",zone = "IST")
+    @Scheduled(cron = "0 30 8,17 * * *",zone = "IST")
     public void extractTableData() {
         try {
             String url=env.getProperty("app.web");
@@ -34,7 +34,7 @@ public class TrackCovidDataExtract {
             String recovered = null;
             String deceased = null;
 
-            for (int i = 1; i < 32; i++) { //first row is the col names so skip it.
+            for (int i = 1; i < 33; i++) { //first row is the col names so skip it.
                 Element row = rows.get(i);
                 Elements cols = row.select("td");
                 stateName=cols.get(1).text();
