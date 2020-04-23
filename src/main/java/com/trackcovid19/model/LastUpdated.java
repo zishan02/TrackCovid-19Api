@@ -1,82 +1,79 @@
 package com.trackcovid19.model;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Document
 public class LastUpdated {
-    @Id
-    private String id = "first";
-    private Date lastUpdated;
-    @Transient
-    @JsonSerialize
-    private String date;
-    @Transient
-    @JsonSerialize
-    private String time;
+  @Id private String id = "first";
+  private Date lastUpdated;
+  @Transient @JsonSerialize private String date;
+  @Transient @JsonSerialize private String time;
 
+  @Transient @JsonSerialize private String timeDiffText;
 
-    @Transient
-    @JsonSerialize
-    private String timeDiffText;
+  @Transient @JsonSerialize private long timeDiffHr;
 
-    @Transient
-    @JsonSerialize
-    private long timeDiffHr;
+  @Transient @JsonSerialize private long timeDiffMn;
 
-    @Transient
-    @JsonSerialize
-    private long timeDiffMn;
+  public String getId() {
+    return id;
+  }
 
-    public String getTimeDiffText() {
-        return timeDiffText;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setTimeDiffText(String timeDiffText) {
-        this.timeDiffText = timeDiffText;
-    }
+  public String getTimeDiffText() {
+    return timeDiffText;
+  }
 
-    public long getTimeDiffHr() {
-        return timeDiffHr;
-    }
+  public void setTimeDiffText(String timeDiffText) {
+    this.timeDiffText = timeDiffText;
+  }
 
-    public void setTimeDiffHr(long timeDiffHr) {
-        this.timeDiffHr = timeDiffHr;
-    }
+  public long getTimeDiffHr() {
+    return timeDiffHr;
+  }
 
-    public long getTimeDiffMn() {
-        return timeDiffMn;
-    }
+  public void setTimeDiffHr(long timeDiffHr) {
+    this.timeDiffHr = timeDiffHr;
+  }
 
-    public void setTimeDiffMn(long timeDiffMn) {
-        this.timeDiffMn = timeDiffMn;
-    }
+  public long getTimeDiffMn() {
+    return timeDiffMn;
+  }
 
-    public String getDate() {
-        return date;
-    }
+  public void setTimeDiffMn(long timeDiffMn) {
+    this.timeDiffMn = timeDiffMn;
+  }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+  public String getDate() {
+    return date;
+  }
 
-    public String getTime() {
-        return time;
-    }
+  public void setDate(String date) {
+    this.date = date;
+  }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
+  public String getTime() {
+    return time;
+  }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
-    }
+  public void setTime(String time) {
+    this.time = time;
+  }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+  public Date getLastUpdated() {
+    return lastUpdated;
+  }
+
+  public void setLastUpdated(Date lastUpdated) {
+    this.lastUpdated = lastUpdated;
+  }
 }
