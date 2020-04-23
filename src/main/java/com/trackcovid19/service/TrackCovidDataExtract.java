@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TrackCovidDataExtract {
 
+
   @Autowired private TrackCovid19Service trackCovid19Service;
 
   @Autowired private Environment env;
@@ -42,7 +43,7 @@ public class TrackCovidDataExtract {
         deceased = cols.get(4).text();
         if (stateName.contains("#")) {
           stateName = stateName.replace("#", "");
-        }
+    }
         StateWiseData stateWiseData = new StateWiseData(stateName, confirmed, recovered, deceased);
         stateWiseData.setLastUpdated(new Date());
         trackCovid19Service.createPerState(stateWiseData);
