@@ -8,8 +8,8 @@ import javax.validation.Valid;
 
 import com.trackcovid19.model.*;
 import com.trackcovid19.service.TrackCovid19Service;
-
 import com.trackcovid19.service.TrackCovidDataExtract;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
