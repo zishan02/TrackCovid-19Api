@@ -22,10 +22,10 @@ public class TrackCovidDataExtract {
     @Autowired
     private Environment env;
 
-    @Scheduled(cron = "0 30 8,17 * * *",zone = "IST")
+    @Scheduled(cron = "0 30 8,17 * * *", zone = "IST")
     public void extractTableData() {
         try {
-            String url=env.getProperty("app.web");
+            String url = env.getProperty("app.web");
             Document doc = Jsoup.connect(url).get();
             Element table = doc.select("table").get(0);
             Elements rows = table.select("tr");
@@ -37,19 +37,19 @@ public class TrackCovidDataExtract {
             for (int i = 1; i < 33; i++) { //first row is the col names so skip it.
                 Element row = rows.get(i);
                 Elements cols = row.select("td");
-                stateName=cols.get(1).text();
+                stateName = cols.get(1).text();
                 confirmed = cols.get(2).text();
                 recovered = cols.get(3).text();
                 deceased = cols.get(4).text();
-                if(stateName.contains("#")){
-                    stateName=stateName.replace("#","");
+                if (stateName.contains("#")) {
+                    stateName = stateName.replace("#", "");
                 }
-                StateWiseData stateWiseData=new StateWiseData(stateName,confirmed,recovered,deceased);
+                StateWiseData stateWiseData = new StateWiseData(stateName, confirmed, recovered, deceased);
                 stateWiseData.setLastUpdated(new Date());
                 trackCovid19Service.createPerState(stateWiseData);
 
             }
-            LastUpdated lastUpdated=new LastUpdated();
+            LastUpdated lastUpdated = new LastUpdated();
             lastUpdated.setLastUpdated(new Date());
             trackCovid19Service.createLastUpdate(lastUpdated);
             System.out.println("Executed");
