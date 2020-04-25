@@ -188,6 +188,7 @@ public class TrackCovid19Service {
     List<CovidIncrease> covidIncreaseList = new ArrayList<>();
     CovidChartData data = this.readChartDataFromExcel();
     List<Long> yAxisData = data.getyAxis();
+    List<String> xAxisData = data.getxAxis();
     int length = yAxisData.size();
     int windowSize = length - 6;
     for (int i = windowSize; i < length - 1; i++) {
@@ -196,6 +197,7 @@ public class TrackCovid19Service {
       long perChange = Math.round(Double.valueOf((change * 100) / yAxisData.get(i)));
       num++;
       covidIncrease.setNum(num);
+      covidIncrease.setDate(xAxisData.get(i + 1));
       covidIncrease.setChange(change);
       covidIncrease.setPercentageChangeVal(perChange);
       covidIncrease.setPercentageChange(perChange + "%");
