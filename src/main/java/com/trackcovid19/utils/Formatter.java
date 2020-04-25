@@ -39,8 +39,7 @@ public class Formatter {
   }
 
   public static String getISTDate(Date date) {
-    SimpleDateFormat sd = new SimpleDateFormat(
-            "dd MMM");
+    SimpleDateFormat sd = new SimpleDateFormat("dd MMM");
 
     // TODO: Avoid using the abbreviations when fetching time zones.
     // Use the full Olson zone ID instead.

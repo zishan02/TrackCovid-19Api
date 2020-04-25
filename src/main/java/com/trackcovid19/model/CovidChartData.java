@@ -1,13 +1,11 @@
 package com.trackcovid19.model;
 
+import java.util.ArrayList;
+
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CovidChartData {
-  @Id
-  private String id;
+  @Id private String id;
   private ArrayList<String> xAxis;
   private ArrayList<Long> yAxis;
 
