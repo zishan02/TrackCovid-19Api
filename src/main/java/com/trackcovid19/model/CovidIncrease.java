@@ -6,13 +6,13 @@ public class CovidIncrease {
   private String date;
   private int change;
   private String percentageChange;
-  private Double percentageChangeVal;
+  private Long percentageChangeVal;
 
-  public Double getPercentageChangeVal() {
+  public Long getPercentageChangeVal() {
     return percentageChangeVal;
   }
 
-  public void setPercentageChangeVal(Double percentageChangeVal) {
+  public void setPercentageChangeVal(Long percentageChangeVal) {
     this.percentageChangeVal = percentageChangeVal;
   }
 
