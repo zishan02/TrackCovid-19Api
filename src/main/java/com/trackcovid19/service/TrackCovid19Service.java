@@ -183,21 +183,21 @@ public class TrackCovid19Service {
   }
 
   public List<CovidIncrease> fetchLast5Increase() {
-      int change = 0;
-      List<CovidIncrease> covidIncreaseList = new ArrayList<>();
-      CovidChartData data=this.readChartDataFromExcel();
-      List<Long> yAxisData=data.getyAxis();
-      int length=yAxisData.size();
-      int windowSize=length-6;
-      for(int i=windowSize;i<length-1;i++){
-          CovidIncrease covidIncrease = new CovidIncrease();
-          change = (int) (yAxisData.get(i+1) - yAxisData.get(i));
-          Double perChange = Double.valueOf((change*100)/yAxisData.get(i));
-          covidIncrease.setChange(change);
-          covidIncrease.setPercentageChangeVal(perChange);
-          covidIncrease.setPercentageChange(perChange + "%");
-          covidIncreaseList.add(covidIncrease);
-      }
+    int change = 0;
+    List<CovidIncrease> covidIncreaseList = new ArrayList<>();
+    CovidChartData data = this.readChartDataFromExcel();
+    List<Long> yAxisData = data.getyAxis();
+    int length = yAxisData.size();
+    int windowSize = length - 6;
+    for (int i = windowSize; i < length - 1; i++) {
+      CovidIncrease covidIncrease = new CovidIncrease();
+      change = (int) (yAxisData.get(i + 1) - yAxisData.get(i));
+      Double perChange = Double.valueOf((change * 100) / yAxisData.get(i));
+      covidIncrease.setChange(change);
+      covidIncrease.setPercentageChangeVal(perChange);
+      covidIncrease.setPercentageChange(perChange + "%");
+      covidIncreaseList.add(covidIncrease);
+    }
     return covidIncreaseList;
   }
 
