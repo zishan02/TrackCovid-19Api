@@ -19,6 +19,7 @@ public class TrackCovid19Controller {
 
   @Autowired private TrackCovidDataExtract trackCovidDataExtract;
 
+
   @CrossOrigin
   @GetMapping("/fetchTableData")
   public List<StateWiseData> fetchAll() {
@@ -87,4 +88,11 @@ public class TrackCovid19Controller {
   public void extractTableData() {
     trackCovidDataExtract.extractTableData();
   }
+
+  @CrossOrigin
+  @GetMapping("/testuri")
+  public void testMethod() {
+    trackCovid19Service.writeToExcel();
+  }
+
 }

@@ -1,10 +1,17 @@
 package com.trackcovid19.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
+import com.trackcovid19.Repository.TrackCovid19ChartDataRepo;
+import com.trackcovid19.model.CasesCount;
+import com.trackcovid19.model.CovidChartData;
 import com.trackcovid19.model.LastUpdated;
 import com.trackcovid19.model.StateWiseData;
 
+import com.trackcovid19.utils.Formatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,6 +27,9 @@ public class TrackCovidDataExtract {
   @Autowired private TrackCovid19Service trackCovid19Service;
 
   @Autowired private Environment env;
+
+  @Autowired
+  private TrackCovid19ChartDataRepo trackCovid19ChartDataRepo;
 
   @Scheduled(cron = "0 0 9,18 * * *", zone = "IST")
   public void extractTableData() {
@@ -56,4 +66,18 @@ public class TrackCovidDataExtract {
       e.printStackTrace();
     }
   }
+
+  @Scheduled(cron = "0 10 09 * * *", zone = "IST")
+  public void scheduleChartDataUpdate(){
+    CasesCount casesCount=trackCovid19Service.calculateTotals();
+    Optional<CovidChartData> data = trackCovid19ChartDataRepo.findById("5ea418303d084b2ff1a8adef");
+    Date date=new Date();
+    Date oneDayBefore=new Date(date.getTime() - 2);
+    data.get().getxAxis().add(Formatter.getISTDate(oneDayBefore));
+    data.get().getyAxis().add(Long.valueOf(casesCount.getTotalActiveCases()));
+    trackCovid19ChartDataRepo.save(data.get());
+
+  }
+
+
 }

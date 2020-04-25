@@ -1,7 +1,9 @@
 package com.trackcovid19.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class Formatter {
 
@@ -34,5 +36,15 @@ public class Formatter {
    */
   public static boolean isToday(Date date) {
     return isSameDay(date, Calendar.getInstance().getTime());
+  }
+
+  public static String getISTDate(Date date) {
+    SimpleDateFormat sd = new SimpleDateFormat(
+            "dd MMM");
+
+    // TODO: Avoid using the abbreviations when fetching time zones.
+    // Use the full Olson zone ID instead.
+    sd.setTimeZone(TimeZone.getTimeZone("IST"));
+    return sd.format(date);
   }
 }
