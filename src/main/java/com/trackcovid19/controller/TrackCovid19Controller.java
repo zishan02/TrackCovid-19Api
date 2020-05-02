@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class TrackCovid19Controller {
   @Autowired private TrackCovid19Service trackCovid19Service;
 
-  @Autowired private TrackCovidDataExtract trackCovidDataExtract;
+  TrackCovidDataExtract trackCovidDataExtract=new TrackCovidDataExtract();
+
+
 
   @CrossOrigin
   @GetMapping("/fetchTableData")
@@ -63,6 +65,14 @@ public class TrackCovid19Controller {
   public CovidChartData fetchChartData() {
     return trackCovid19Service.readChartDataFromExcel();
   }
+
+    @CrossOrigin
+    @GetMapping("/removeChartData")
+    public String removeChartData() {
+        CovidChartData covidChartData = trackCovidDataExtract.removeLastData();
+        return covidChartData != null ? "Success" : "Failure";
+    }
+
 
   @CrossOrigin
   @GetMapping("/fetchRateIncrease")
