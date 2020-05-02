@@ -18,9 +18,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 
 public class TrackCovidDataExtract {
 
@@ -84,7 +81,6 @@ public class TrackCovidDataExtract {
       List<Long> yAxis = covidChartDatas.get(0).getyAxis();
       xAxis.remove(xAxis.size() - 1);
       yAxis.remove(yAxis.size() - 1);
-
     }
     return trackCovid19ChartDataRepo.save(covidChartDatas.get(0));
   }
