@@ -298,6 +298,4 @@ public class TrackCovid19Service {
       e.printStackTrace();
     }
   }
-
-
 }
