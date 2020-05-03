@@ -1,14 +1,13 @@
 package com.trackcovid19.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import com.trackcovid19.Repository.TrackCovid19ChartDataRepo;
-import com.trackcovid19.model.CasesCount;
-import com.trackcovid19.model.CovidChartData;
-import com.trackcovid19.model.LastUpdated;
-import com.trackcovid19.model.StateWiseData;
+import com.trackcovid19.Repository.TrackCovid19ChartDeathRepo;
+import com.trackcovid19.model.*;
 import com.trackcovid19.utils.Formatter;
 
 import org.jsoup.Jsoup;
@@ -26,6 +25,8 @@ public class TrackCovidDataExtract {
   @Autowired private Environment env;
 
   @Autowired private TrackCovid19ChartDataRepo trackCovid19ChartDataRepo;
+
+  @Autowired private TrackCovid19ChartDeathRepo trackCovid19ChartDeathRepo;
 
   @Scheduled(cron = "0 0 9,18 * * *", zone = "IST")
   public void extractTableData() {
@@ -83,5 +84,22 @@ public class TrackCovidDataExtract {
       yAxis.remove(yAxis.size() - 1);
     }
     return trackCovid19ChartDataRepo.save(covidChartDatas.get(0));
+  }
+
+  @Scheduled(cron = "0 12 09 * * *", zone = "IST")
+  public void updateData() {
+    CasesCount casesCount = trackCovid19Service.calculateTotals();
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -1);
+    List<TrackCovid19DeathChart> trackCovid19DeathCharts = trackCovid19ChartDeathRepo.findAll();
+    if (null != trackCovid19DeathCharts && trackCovid19DeathCharts.size() > 0) {
+      TrackCovid19DeathChart trackCovid19DeathChart = trackCovid19DeathCharts.get(0);
+      List<String> xAxis = trackCovid19DeathChart.getDate();
+      List<Integer> yAxis = trackCovid19DeathChart.getTotalDeaths();
+      xAxis.add(Formatter.getISTDate(cal.getTime()));
+      yAxis.add(casesCount.getTotalDeceasedCases());
+      trackCovid19ChartDeathRepo.save(trackCovid19DeathChart);
+    }
+    System.out.println("Executed : TrackCovid19DeathChartData");
   }
 }

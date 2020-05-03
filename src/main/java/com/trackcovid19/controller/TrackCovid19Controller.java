@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.trackcovid19.model.*;
+import com.trackcovid19.service.TrackCovid19DeathChartService;
 import com.trackcovid19.service.TrackCovid19Service;
 import com.trackcovid19.service.TrackCovidDataExtract;
 
@@ -18,6 +19,8 @@ public class TrackCovid19Controller {
   @Autowired private TrackCovid19Service trackCovid19Service;
 
   @Autowired TrackCovidDataExtract trackCovidDataExtract;
+
+  @Autowired TrackCovid19DeathChartService trackCovid19DeathChartService;
 
   @CrossOrigin
   @GetMapping("/fetchTableData")
@@ -96,8 +99,14 @@ public class TrackCovid19Controller {
   }
 
   @CrossOrigin
-  @GetMapping("/testuri")
-  public void testMethod() {
-    trackCovid19Service.writeToExcel();
+  @PostMapping("/testuri")
+  public void testMethod(@Valid @RequestBody TrackCovid19DeathChart deathChart) {
+    // trackCovid19DeathChartService.updateData(deathChart);
+  }
+
+  @CrossOrigin
+  @GetMapping("/fetchdeathdata")
+  public TrackCovid19DeathChart fetchDeathData() {
+    return trackCovid19DeathChartService.findAllData();
   }
 }
