@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class TrackCovid19Controller {
   @Autowired private TrackCovid19Service trackCovid19Service;
 
-  TrackCovidDataExtract trackCovidDataExtract = new TrackCovidDataExtract();
+  @Autowired TrackCovidDataExtract trackCovidDataExtract;
 
   @CrossOrigin
   @GetMapping("/fetchTableData")
