@@ -68,9 +68,9 @@ public class TrackCovidDataExtract {
   public void scheduleChartDataUpdate() {
     CasesCount casesCount = trackCovid19Service.calculateTotals();
     Optional<CovidChartData> data = trackCovid19ChartDataRepo.findById("5ea418303d084b2ff1a8adef");
-    Date date = new Date();
-    Date oneDayBefore = new Date(date.getTime() - 2);
-    data.get().getxAxis().add(Formatter.getISTDate(oneDayBefore));
+    final Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.DATE, -1);
+    data.get().getxAxis().add(Formatter.getISTDate(cal.getTime()));
     data.get().getyAxis().add(Long.valueOf(casesCount.getTotalActiveCases()));
     trackCovid19ChartDataRepo.save(data.get());
   }
