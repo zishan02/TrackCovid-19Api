@@ -40,7 +40,7 @@ public class TrackCovidDataExtract {
       String recovered = null;
       String deceased = null;
 
-      for (int i = 1; i < 32; i++) { // first row is the col names so skip it.
+      for (int i = 1; i < 34; i++) { // first row is the col names so skip it.
         Element row = rows.get(i);
         Elements cols = row.select("td");
         stateName = cols.get(1).text();
@@ -86,7 +86,7 @@ public class TrackCovidDataExtract {
     return trackCovid19ChartDataRepo.save(covidChartDatas.get(0));
   }
 
-  @Scheduled(cron = "0 12 09 * * *", zone = "IST")
+  @Scheduled(cron = "0 10 20 * * *", zone = "IST")
   public void updateData() {
     CasesCount casesCount = trackCovid19Service.calculateTotals();
     final Calendar cal = Calendar.getInstance();
