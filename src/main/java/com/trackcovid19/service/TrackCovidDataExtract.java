@@ -93,7 +93,7 @@ public class TrackCovidDataExtract {
         if (avail.size() >0 ) {
           System.out.println("TRUE");
           Note note=new Note();
-          note.setSubject("SPUTNIK AVAILABLE at Medanta");
+          note.setSubject("SPUTNIK AVAILABLE at Medanta"+date);
           note.setContent("SPUTNIK Available");
           note.setData(new HashMap<String,String>());
           try {
