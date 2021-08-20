@@ -6,7 +6,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.trackcovid19.model.*;
+import com.trackcovid19.service.FirebaseMessagingService;
 import com.trackcovid19.service.TrackCovid19DeathChartService;
 import com.trackcovid19.service.TrackCovid19Service;
 import com.trackcovid19.service.TrackCovidDataExtract;
@@ -21,6 +24,10 @@ public class TrackCovid19Controller {
   @Autowired TrackCovidDataExtract trackCovidDataExtract;
 
   @Autowired TrackCovid19DeathChartService trackCovid19DeathChartService;
+
+@Autowired
+  private  FirebaseMessagingService firebaseService;
+
 
   @CrossOrigin
   @GetMapping("/fetchTableData")
@@ -108,5 +115,12 @@ public class TrackCovid19Controller {
   @GetMapping("/fetchdeathdata")
   public TrackCovid19DeathChart fetchDeathData() {
     return trackCovid19DeathChartService.findAllData();
+  }
+
+  @CrossOrigin
+  @PostMapping("/send-notification")
+  public String sendNotification(@RequestBody Note note,
+                                 @RequestParam String topic) throws FirebaseMessagingException {
+    return firebaseService.sendNotification(note, topic);
   }
 }

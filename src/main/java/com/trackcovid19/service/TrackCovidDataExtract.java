@@ -1,9 +1,11 @@
 package com.trackcovid19.service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 import com.trackcovid19.Repository.TrackCovid19ChartDataRepo;
 import com.trackcovid19.Repository.TrackCovid19ChartDeathRepo;
@@ -17,6 +19,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.RestTemplate;
 
 public class TrackCovidDataExtract {
 
@@ -27,6 +30,9 @@ public class TrackCovidDataExtract {
   @Autowired private TrackCovid19ChartDataRepo trackCovid19ChartDataRepo;
 
   @Autowired private TrackCovid19ChartDeathRepo trackCovid19ChartDeathRepo;
+
+  @Autowired
+  private FirebaseMessagingService firebaseMessagingService;
 
   @Scheduled(cron = "0 0 9,18 * * *", zone = "IST")
   public void extractTableData() {
@@ -63,7 +69,46 @@ public class TrackCovidDataExtract {
       e.printStackTrace();
     }
   }
+  @Scheduled(cron = "0 * * * * *", zone = "IST")
+  public void findVaccineForLucknow() {
+    LocalDate startDate = LocalDate.now();
+    LocalDate endDate = startDate.plusDays(7);
+    long numOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+    List<LocalDate> listOfDates2 = LongStream.range(0, numOfDays)
+            .mapToObj(startDate::plusDays)
+            .collect(Collectors.toList());
+    for (int i = 0; i < listOfDates2.size(); i++) {
+      LocalDate date = listOfDates2.get(i);
+      String formattedDate = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+      System.out.println(formattedDate);
+      String uri = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=226030&date=" + formattedDate;
+      RestTemplate restTemplate = new RestTemplate();
+      VaccinePincode result = restTemplate.getForObject(uri, VaccinePincode.class);
+      System.out.println(result.getSessions().toString());
+      if (null != result && result.getSessions().size() > 0) {
+        List<Session> vacc = result.getSessions().stream().filter(session -> "SPUTNIK V".equalsIgnoreCase(session.getVaccine())).collect(Collectors.toList());
+        System.out.println(vacc.get(0).getAvailableCapacityDose1());
+        List avail = vacc.stream().filter(session -> session.getAvailableCapacity() > 0).collect(Collectors.toList());
 
+        if (avail.size() >0 ) {
+          System.out.println("TRUE");
+          Note note=new Note();
+          note.setSubject("SPUTNIK AVAILABLE at Medanta");
+          note.setContent("SPUTNIK Available");
+          note.setData(new HashMap<String,String>());
+          try {
+            firebaseMessagingService.sendNotification(note, "weather");
+          }catch (Exception e){
+
+          }
+          return;
+        }
+      }
+      System.out.println("TESTING");
+    }
+    //System.out.println("printing the output of Vaccine finder API" + result.getSessions().get(0).getVaccine());
+
+  }
   @Scheduled(cron = "0 10 09 * * *", zone = "IST")
   public void scheduleChartDataUpdate() {
     CasesCount casesCount = trackCovid19Service.calculateTotals();
@@ -102,4 +147,7 @@ public class TrackCovidDataExtract {
     }
     System.out.println("Executed : TrackCovid19DeathChartData");
   }
+
+
+
 }
