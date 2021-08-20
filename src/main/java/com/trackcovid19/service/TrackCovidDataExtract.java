@@ -69,7 +69,7 @@ public class TrackCovidDataExtract {
       e.printStackTrace();
     }
   }
-  @Scheduled(cron = "*/2 * * * * *", zone = "IST")
+  @Scheduled(cron = "2 * * * * *", zone = "IST")
   public void findVaccineForLucknow() {
     LocalDate startDate = LocalDate.now();
     LocalDate endDate = startDate.plusDays(7);
