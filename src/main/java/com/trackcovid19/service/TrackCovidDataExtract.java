@@ -69,7 +69,7 @@ public class TrackCovidDataExtract {
       e.printStackTrace();
     }
   }
-  @Scheduled(cron = "0 0/2 * * * *", zone = "IST")
+  /*@Scheduled(cron = "0 0/2 * * * *", zone = "IST")
   public void findVaccineForLucknow() {
     LocalDate startDate = LocalDate.now();
     LocalDate endDate = startDate.plusDays(7);
@@ -88,7 +88,7 @@ public class TrackCovidDataExtract {
       if (null != result && result.getSessions().size() > 0) {
         List<Session> vacc = result.getSessions().stream().filter(session -> "SPUTNIK V".equalsIgnoreCase(session.getVaccine())).collect(Collectors.toList());
         System.out.println(vacc.get(0).getAvailableCapacityDose1());
-        List avail = vacc.stream().filter(session -> session.getAvailableCapacity() > 0).collect(Collectors.toList());
+        List avail = vacc.stream().filter(session -> session.getAvailableCapacityDose1() > 0).collect(Collectors.toList());
 
         if (avail.size() >0 ) {
           System.out.println("TRUE");
@@ -108,7 +108,7 @@ public class TrackCovidDataExtract {
     }
     //System.out.println("printing the output of Vaccine finder API" + result.getSessions().get(0).getVaccine());
 
-  }
+  }*/
   @Scheduled(cron = "0 10 09 * * *", zone = "IST")
   public void scheduleChartDataUpdate() {
     CasesCount casesCount = trackCovid19Service.calculateTotals();
